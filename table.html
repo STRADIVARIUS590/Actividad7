@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        table{
+            width: 100%;
+        }
+        table, tr, td, th{
+            border: 1px solid black;
+            border-collapse:collapse
+
+        }
+        body{
+            background-color:#2578dd;
+            font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        }
+    </style>
+    <script src="https://unpkg.com/vue@3"></script>
+</head>
+<body>
+    <h1>Usuarios Registrados</h1>
+    <div id="tabla">
+        <h2>Bienvendo, {{session_name}}</h2>
+        <div v-if="users">
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Address</th>
+                    <th>Phone</th>
+                    <th>Website</th>
+                    <th>Company</th>
+                </tr>
+                <tr v-for="user in users">
+                    <td>    
+                        {{user.name}}
+                    </td>
+                    <td>    
+                        {{user.username}}
+                    </td>
+                    <td>    
+                        {{user.email}}
+                    </td>
+                    <td>  
+                 
+                        Street:  
+                        {{user.address.street}},
+                        
+                        Suite:
+                        {{user.address.suite}},
+                        
+                        City:
+                        {{user.address.city}},
+                        
+                        Zipcode:
+                        {{user.address.zipcode}},
+                        
+                        Geo: lat
+                        {{user.address.geo.lat}},
+                        long
+                        {{user.address.geo.long}}
+                    </td>
+                    <td>
+                        {{user.phone}}
+                    </td>
+                    <td>
+                        {{user.website}}
+                    </td>
+                    
+                    <td>
+                        Name:
+                        {{user.company.name}}
+                        Catchphrase:
+                        {{user.company.catchPhrase}},
+                        bs:
+                        {{user.company.bs}}
+                    </td>
+
+                </tr>
+            </table>
+        </div> 
+
+    <!-- <p>{{users}}</p> -->
+    </div>
+</body>
+<script>
+    const {createApp} = Vue;
+    
+
+    // console.log(localStorage.getItem('name'));
+    createApp({
+        data(){
+            return{
+                users:[] , 
+                session_name : localStorage.getItem('name'), 
+                session_username: localStorage.getItem('username'),
+                session_email: localStorage.getItem('email')
+            }
+        },
+        mounted(){
+            fetch('users.json')
+            .then((res)=>res.json())
+            .then((json)=>this.users = json)
+            .then((error)=>console.log(error));  
+        }
+    }).mount('#tabla');
+
+</script>
+</html>
